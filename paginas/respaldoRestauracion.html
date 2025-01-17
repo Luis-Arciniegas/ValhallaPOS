@@ -1,0 +1,36 @@
+<html><head><base href="./respaldoRestauracion.html">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Respaldo y Restauración del Almacenamiento Local</title>
+<link rel="stylesheet" href="../css/stylesRespaldoRestauracion.css">
+<link rel="icon" href="../imagenes/valhallaFavicon.ico" type="image/png">
+</head>
+<body>
+  <div class="container">
+    <a href="../index.html" class="control-panel"> &#x1F3E0; Panel de Control</a>
+    <h1>Respaldo y Restauración del Almacenamiento Local</h1>
+    
+    <div class="storage-info">
+      <p>Información del Almacenamiento:</p>
+      <div id="storageStats"></div>
+      <div class="storage-bar">
+        <div class="storage-bar-fill" id="storageBarFill"></div>
+      </div>
+    </div>
+
+    <div id="message" class="message"></div>
+    
+    <div class="actions">
+      <button onclick="backupManager.createBackup()">&#x1f4e5; Crear Respaldo</button>
+      <button onclick="document.getElementById('fileInput').click()">&#x1f4e4; Restaurar desde Respaldo</button>
+      <button class="delete" onclick="backupManager.clearLocalStorage()">&#x1f5d1;&#xfe0f; Borrar Almacenamiento</button>
+      <input type="file" id="fileInput" accept=".json" onchange="backupManager.restoreBackup(event)">
+    </div>
+
+    <div class="preview">
+      <h3>Datos Actuales del Almacenamiento:</h3>
+      <pre id="storagePreview"></pre>
+    </div>
+  </div>
+  <script src="../scripts/scriptRespaldoRestauracion.js"></script>
+
+</body></html>

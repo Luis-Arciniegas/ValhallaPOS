@@ -1,0 +1,178 @@
+<html>
+<head>
+  <base href="." target="_top">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Productos e Inventario &#x1f3ea;</title>
+  <link rel="stylesheet" href="../css/stylesInventario.css">
+  <link rel="icon" href="../imagenes/valhallaFavicon.ico" type="image/png">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>&#x1f3ea; Productos e Inventario</h1>
+    </header>
+    <nav class="nav-menu">
+      <ul>
+        <li><a href="#categories" class="nav-link">&#x1f4c1; Categor&#xed;as</a></li>
+        <li><a href="#products" class="nav-link">&#x1f6cd;&#xfe0f; Productos</a></li>
+        <li><a href="#movements" class="nav-link">&#x1f4c8; Movimientos</a></li>
+        <li><a href="#history" class="nav-link">&#x1f4c8; Historial</a></li>
+      </ul>
+    </nav>
+    <div class="tabs">
+      <button class="tab active" data-tab="inventory">&#x1f4e6; Inventario</button>
+      <button class="tab" data-tab="backup">&#x1f4be; Copias de Seguridad</button>
+      <a href="../index.html" class="tab"> &#x1F3E0; Panel de Control</a>
+    </div>
+
+    <div id="inventory" class="tab-content active">
+      <div id="categories" class="card">
+        <h2>&#x1f4c1; Gesti&#xf3;n de Categor&#xed;as</h2>
+        <form id="categoryForm">
+          <div class="form-group">
+            <label for="categoryName">Nombre de la Categor&#xed;a</label>
+            <input type="text" id="categoryName" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Agregar Categor&#xed;a</button>
+        </form>
+        <div class="table-wrapper">
+          <table class="table" id="categoryTable">
+            <thead>
+              <tr>
+                <th>Nombre</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="products" class="card">
+        <h2>&#x1f6cd;&#xfe0f; Gesti&#xf3;n de Productos</h2>
+        <form id="productForm">
+          <div class="form-group">
+            <label for="productCategory">Categor&#xed;a</label>
+            <select id="productCategory" class="form-control" required></select>
+          </div>
+          <div class="form-group">
+            <label for="productName">Nombre del Producto</label>
+            <input type="text" id="productName" class="form-control" required>
+          </div>
+          <div class="form-group">
+            <label for="productPrice">Precio (COP)</label>
+            <input type="number" id="productPrice" class="form-control" step="1" required>
+          </div>
+          <div class="form-group">
+            <label for="productStock">Stock</label>
+            <input type="number" id="productStock" class="form-control" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Agregar Producto</button>
+        </form>
+
+        <div class="filters" style="margin-top: 2rem;">
+          <div class="form-group">
+            <input type="text" id="productSearch" class="form-control" placeholder="Buscar productos...">
+          </div>
+          <div class="form-group">
+            <select id="categoryFilter" class="form-control">
+              <option value>Todas las categor&#xed;as</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="table-wrapper">
+          <table class="table" id="productTable">
+            <thead>
+              <tr>
+                <th>Categor&#xed;a</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+
+      <div id="movements" class="card" style="margin-top: 20px;">
+        <h2>&#x1f4c8; Movimientos de Inventario</h2>
+        
+        <form id="movementForm">
+          <div class="form-group">
+            <label for="movementProduct">Producto</label>
+            <select id="movementProduct" class="form-control" required></select>
+          </div>
+          
+          <div class="form-group">
+            <label for="movementType">Tipo de Movimiento</label>
+            <select id="movementType" class="form-control" required>
+              <option value="entrada">&#x1f4e5; Entrada</option>
+              <option value="salida">&#x1f4e9; Salida</option>  
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="movementQuantity">Cantidad</label>
+            <input type="number" id="movementQuantity" class="form-control" min="1" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="movementDescription">Descripci&#xf3;n</label>
+            <textarea id="movementDescription" class="form-control" required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary">Registrar Movimiento</button>
+        </form>
+
+        <div id="history" style="margin-top: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+            <h3>Historial de Movimientos</h3>
+            <div style="display: flex; gap: 10px;">
+              <button id="printMovements" class="btn btn-primary">
+                <span>&#x1f4e4;</span> Imprimir PDF
+              </button>
+              <button id="clearAllHistory" class="btn btn-danger">
+                <span>&#x1f5d1;</span> Borrar Todo el Historial
+              </button>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table class="table" id="movementsTable">
+              <thead>
+                <tr>
+                  <th>Fecha</th>
+                  <th>Producto</th>
+                  <th>Tipo</th>
+                  <th>Cantidad</th>
+                  <th>Stock Final</th>
+                  <th>Descripci&#xf3;n</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="backup" class="tab-content">
+      <div class="card">
+        <h2>&#x1f4be; Copias de Seguridad</h2>
+        <div style="display: flex; gap: 1rem;">
+          <button id="downloadBackup" class="btn btn-primary">&#x1f4e5; Descargar Backup</button>
+          <div class="form-group" style="flex-grow: 1;">
+            <input type="file" id="restoreBackup" class="form-control" accept=".json">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../scripts/scriptInventario.js"></script>
+</body>
+</html>

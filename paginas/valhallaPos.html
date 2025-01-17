@@ -1,0 +1,298 @@
+<html><head><base href=".">
+    <meta charset="UTF-8">
+    <title>Valhalla POS</title>
+    <link rel="stylesheet" href="../css/stylesValhalla.css">
+    <link rel="icon" href="../imagenes/valhallaFavicon.ico" type="image/png">
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h1><span class="emoji">&#x1f37d;&#xfe0f;</span> Valhalla POS </h1>
+                <p>Control de mesas y caja diaria</p>
+                <button id="fullscreenBtn" class="btn-fullscreen">
+                    <span class="fullscreen-icon">&#x26f6;</span>
+                </button>
+                <button id="settingsBtn" class="btn-settings">
+                    &#x2699;&#xfe0f; Configuraci&#xf3;n
+                </button>
+                <a href="../index.html" class="btn-control-panel">
+                  &#x1F3E0; Panel de Control
+                </a>
+            </div>
+            
+            <div id="notification" class="notification"></div>
+            
+            <div id="customNotification" class="custom-notification">
+                <span class="notification-icon">&#x26a0;&#xfe0f;</span>
+                <span class="notification-message"></span>
+            </div>
+    
+            <div class="section establishment-settings" id="establishmentSettings" style="display: none;">
+              <h2><span class="emoji">&#x1f3e0;</span> Configuraci&#xf3;n del Establecimiento</h2>
+              <div class="form-group">
+                <label for="establishmentName">Nombre del Establecimiento</label>
+                <input type="text" id="establishmentName" class="settings-input">
+              </div>
+              <div class="form-group">
+                <label for="establishmentNIT">NIT</label>
+                <input type="text" id="establishmentNIT" class="settings-input">
+              </div>
+              <div class="form-group">
+                <label for="establishmentAddress">Direcci&#xf3;n</label>
+                <input type="text" id="establishmentAddress" class="settings-input">
+              </div>
+              <div class="form-group">
+                <label for="establishmentPhone">Tel&#xe9;fono</label>
+                <input type="text" id="establishmentPhone" class="settings-input">
+              </div>
+              <button class="btn btn-primary" onclick="restaurantManager.saveEstablishmentSettings()">
+                &#x1f4be; Guardar Configuraci&#xf3;n
+              </button>
+            </div>
+    
+            <div class="tabs">
+                <button class="tab active" onclick="showTab(&apos;tables&apos;)">
+                    <span class="emoji">&#x1fa91;</span> Mesas
+                </button>
+                <button class="tab" onclick="showTab(&apos;register&apos;)">
+                    <span class="emoji">&#x1f4b0;</span> Caja
+                </button>
+            </div>
+    
+            <div id="tablesContent" class="tab-content active">
+                <div class="section">
+                    <h2><span class="emoji"></span> Control de Mesas</h2>
+                    <div class="table-controls">
+                        <button class="btn btn-primary" onclick="restaurantManager.addTable()">&#x2795; Agregar Mesa</button>
+                        <button class="btn btn-primary" onclick="restaurantManager.refreshTables()">&#x1f504; Actualizar Mesas</button>
+                    </div>
+                    <div class="tables-grid" id="tablesContainer"></div>
+                </div>
+            </div>
+    
+            <div id="registerContent" class="tab-content">
+                <div class="section">
+                    <h2><span class="emoji">&#x1f4b0;</span> Control de Caja</h2>
+                    
+                    <div class="cash-adjustment-form">
+                        <h3>&#x1f4ca; Movimiento de Efectivo</h3>
+                        <div class="form-group">
+                            <label for="adjustmentType">Tipo de Movimiento &#x1f4b1;</label>
+                            <select id="adjustmentType">
+                                <option value="initialBase">&#x1f4b5; Base Inicial</option>
+                                <option value="income">&#x1f4e5; Ingreso</option>
+                                <option value="expense">&#x1f4e4; Egreso</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="adjustmentAmount">Monto &#x1f4b5;</label>
+                            <input type="number" id="adjustmentAmount" placeholder="0.00">
+                        </div>
+                        <div class="form-group">
+                            <label for="adjustmentDescription">Descripci&#xf3;n &#x1f4dd;</label>
+                            <input type="text" id="adjustmentDescription" placeholder="Detalle del movimiento">
+                        </div>
+                        <button class="btn btn-primary" onclick="restaurantManager.addCashAdjustment(
+                            document.getElementById(&apos;adjustmentType&apos;).value,
+                            parseFloat(document.getElementById(&apos;adjustmentAmount&apos;).value),
+                            document.getElementById(&apos;adjustmentDescription&apos;).value
+                        )">
+                            &#x2705; Registrar Movimiento
+                        </button>
+                    </div>
+    
+                    <div class="daily-summary">
+                        <div class="summary-card">
+                            <h3><span class="emoji">&#x1f4b5;</span> Ventas por Mesa</h3>
+                            <p id="tableRevenue">&#x24;0.00</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3><span class="emoji">&#x1f4b5;</span> Pagos en Efectivo</h3>
+                            <p id="cashPayments">&#x24;0.00</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3><span class="emoji">&#x1f4b5;</span> Pagos con Tarjeta</h3>
+                            <p id="cardPayments">&#x24;0.00</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3><span class="emoji">&#x1f504;</span> Otros Pagos</h3>
+                            <p id="otherPayments">&#x24;0.00</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3><span class="emoji">&#x1f4b8;</span> Ingreso de Efectivo</h3>
+                            <p id="otherRevenue">&#x24;0.00</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3><span class="emoji">&#x1f4e4;</span> Egresos</h3>
+                            <p id="expenses">&#x24;0.00</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3><span class="emoji">&#x1f3f7;&#xfe0f;</span> Total Neto</h3>
+                            <p id="netTotal">&#x24;0.00</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3><span class="emoji">&#x1f4b5;</span> Base Inicial</h3>
+                            <p id="initialBase">&#x24;0.00</p>
+                        </div>
+                        <div class="summary-card">
+                            <h3><span class="emoji">&#x1f389;</span> Cortes&#xed;as</h3>
+                            <p id="courtesyPayments">&#x24; 0.00</p>
+                        </div>
+                    </div>
+    
+                    <div class="daily-actions">
+                        <button class="btn btn-primary" onclick="restaurantManager.printDailyReport()">
+                            &#x1f5a8;&#xfe0f; Cerrar caja
+                        </button>
+                    </div>
+    
+                    <div class="records-section">
+                        <h3>&#x1f4cb; Historial de Cierres de Caja</h3>
+                        <div class="records-actions">
+                            <button class="btn btn-primary" onclick="restaurantManager.downloadRecords()">
+                                &#x1f4be; Descargar Registros 
+                            </button>
+                            <button class="btn btn-danger" onclick="restaurantManager.showDeleteRecordsModal()">
+                                &#x1f5d1;&#xfe0f; Eliminar Todos los Registros
+                            </button>
+                            <input type="file" id="recordsFileInput" accept=".json" style="display: none;" onchange="restaurantManager.loadRecordsFromFile(event)">
+                            <button class="btn btn-primary" onclick="document.getElementById(&apos;recordsFileInput&apos;).click()">
+                                &#x1f4e4; Cargar Registros 
+                            </button>
+                        </div>
+                        <div id="dailyRecords"></div>
+                    </div>
+                </div>
+            </div>
+    
+            <div id="deleteModal" class="modal">
+                <div class="modal-content">
+                    <button class="modal-close-btn" onclick="closeDeleteModal()">&#x2716;</button>
+                    <h3>&#x1f5d1;&#xfe0f; &#xbf;Est&#xe1; seguro que desea eliminar esta mesa?</h3>
+                    <div class="modal-buttons">
+                        <button class="modal-btn modal-btn-confirm" id="confirmDelete">Eliminar</button>
+                        <button class="modal-btn modal-btn-cancel" onclick="closeDeleteModal()">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+    
+            <div id="paymentTypeModal" class="modal">
+                <div class="modal-content">
+                    <button class="modal-close-btn" onclick="document.getElementById(&apos;paymentTypeModal&apos;).style.display=&apos;none&apos;">&#x2716;</button>
+                    <h3>&#x1f4b3; Seleccione M&#xe9;todo de Pago</h3>
+                    <div class="payment-options">
+                        <button class="payment-btn" id="cashPaymentBtn" onclick="restaurantManager.setPaymentType(&apos;cash&apos;)">
+                            &#x1f4b5; Efectivo
+                        </button>
+                        <button class="payment-btn" id="cardPaymentBtn" onclick="restaurantManager.setPaymentType(&apos;card&apos;)">
+                            &#x1f4b3; Tarjeta
+                        </button>
+                        <button class="payment-btn" id="otherPaymentBtn" onclick="restaurantManager.setPaymentType(&apos;other&apos;)">
+                            &#x1f504; Otro
+                        </button>
+                        <button class="payment-btn" id="courtesyPaymentBtn" onclick="restaurantManager.setPaymentType(&apos;courtesy&apos;)">
+                            &#x1f389; Cortes&#xed;a
+                        </button>
+                    </div>
+                </div>
+            </div>
+    
+            <div id="tableModal" class="modal">
+                <div class="modal-content" style="max-width: 1200px;">
+                    <button class="modal-close-btn" onclick="closeTableModal()">&#x2716;</button>
+                    <h3>&#x1fa91; Mesa <span id="tableModalNumber"></span></h3>
+                    <div class="table-management">
+                        <div class="order-section">
+                            <h4>&#x1f4cb; Orden Actual</h4>
+                            <div id="productsList" class="products-list"></div>
+                            <div class="order-total">
+                                <h4>Total: &#x24;<span id="orderTotal">0.00</span></h4>
+                            </div>
+                            <div class="table-actions">
+                                <div class="payment-type-selector">
+                                    <h4>&#x1f4b3; Forma de Pago</h4>
+                                    <div class="payment-buttons">
+                                        <button class="payment-btn" id="cashPaymentBtn" onclick="restaurantManager.setPaymentType(&apos;cash&apos;)">
+                                            &#x1f4b5; Efectivo
+                                        </button>
+                                        <button class="payment-btn" id="cardPaymentBtn" onclick="restaurantManager.setPaymentType(&apos;card&apos;)">
+                                            &#x1f4b3; Tarjeta
+                                        </button>
+                                        <button class="payment-btn" id="otherPaymentBtn" onclick="restaurantManager.setPaymentType(&apos;other&apos;)">
+                                            &#x1f504; Otro
+                                        </button>
+                                        <button class="payment-btn" id="courtesyPaymentBtn" onclick="restaurantManager.setPaymentType(&apos;courtesy&apos;)">
+                                            &#x1f389; Cortes&#xed;a
+                                        </button>
+                                    </div>
+                                    <p id="selectedPayment">Pago seleccionado: Sin seleccionar &#x26a0;&#xfe0f;</p>
+                                    <div class="change-calculator" style="margin-top: 15px; padding: 10px; background: #f8fafc; border-radius: 6px;">
+                                        <h4>&#x1f4b3; Calculadora de Cambio</h4>
+                                        <input type="number" id="amountPaid" placeholder="Monto recibido" style="width: 100%; padding: 8px; margin: 5px 0; border: 1px solid var(--primary-color); border-radius: 4px;">
+                                        <p id="changeAmount" style="margin: 5px 0; font-weight: bold;">Cambio: &#x24; 0</p>
+                                    </div>
+                                </div>
+                                <div class="table-action-buttons">
+                                    <button class="btn btn-primary" onclick="restaurantManager.printOrderTicket(restaurantManager.tables.find(t =&gt; t.id === restaurantManager.activeTableId))">
+                                        &#x1f514; Orden de Cocina
+                                    </button>
+                                    <button class="btn btn-primary" onclick="restaurantManager.printInvoice(restaurantManager.tables.find(t =&gt; t.id === restaurantManager.activeTableId))">
+                                        &#x1f9fe; Imprimir Factura
+                                    </button>
+                                    <button class="btn btn-primary" onclick="restaurantManager.closeTable()">&#x1f4b0; Cerrar Mesa</button>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <div class="menu-section">
+                            <h4>&#x1f37d;&#xfe0f; Men&#xfa;</h4>
+                            <div class="menu-grid" id="menuItems">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div id="closeRegisterModal" class="modal">
+              <div class="modal-content" style="max-width: 400px;">
+                <h3>&#x26a0;&#xfe0f; Advertencia</h3>
+                <p>Est&#xe1; a punto de imprimir el reporte diario y reiniciar los valores de caja. IMPORTANTE, las mesas tienen que estar cerradas &#xbf;Desea continuar?</p>
+                <div id="passwordInput" style="display: none;">
+                  <input type="password" id="registerPassword" class="settings-input" placeholder="Ingrese la contrase&#xf1;a">
+                  <p id="passwordError" style="color: var(--danger-color); display: none;">Contrase&#xf1;a incorrecta</p>
+                </div>
+                <div class="modal-buttons">
+                  <button class="modal-btn modal-btn-confirm" onclick="restaurantManager.confirmCloseRegister()">Continuar</button>
+                  <button class="modal-btn modal-btn-cancel" onclick="closeCloseRegisterModal()">Cancelar</button>
+                </div>
+              </div>
+            </div>
+    
+            <div id="deleteRecordsModal" class="modal">
+                <div class="modal-content" style="max-width: 400px;">
+                    <button class="modal-close-btn" onclick="closeDeleteRecordsModal()">&#x2716;</button>
+                    <h3>&#x1f5d1;&#xfe0f; Advertencia</h3>
+                    <p>&#xbf;Est&#xe1; seguro de que quiere eliminar los registros?</p>
+                    <div class="modal-buttons">
+                        <button class="modal-btn modal-btn-confirm" onclick="restaurantManager.deleteAllRecords()">Eliminar</button>
+                        <button class="modal-btn modal-btn-cancel" onclick="closeDeleteRecordsModal()">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+    
+            <div id="stockWarningModal" class="modal">
+                <div class="modal-content" style="max-width: 400px;">
+                    <button class="modal-close-btn" onclick="closeStockWarningModal()">&#x2716;</button>
+                    <h3>&#x26a0;&#xfe0f; Advertencia de Stock</h3>
+                    <p>Este producto no tiene stock actualmente.</p>
+                    <p>&#x20bf;Desea agregarlo de todas formas?</p>
+                    <div class="modal-buttons">
+                        <button class="modal-btn modal-btn-confirm" id="confirmAddNoStock">Agregar</button>
+                        <button class="modal-btn modal-btn-cancel" onclick="closeStockWarningModal()">Cancelar</button>
+                    </div>
+                </div>
+            </div>
+    
+            <script src="../scripts/scriptValhallaPos.js?v=5"></script>
+    </div></body>
+    </html>

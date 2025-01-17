@@ -1,0 +1,192 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: #222;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: #fff;
+  }
+
+  .container {
+    position: relative;
+    background: #333;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    width: 100%;
+    max-width: 600px;
+    margin-top: 80px;
+  }
+
+  h1 {
+    text-align: center;
+    color: #fff;
+    margin-bottom: 2rem;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .storage-info {
+    background: #444;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .storage-info p {
+    margin: 0.5rem 0;
+    color: #90CAF9;
+  }
+
+  .storage-bar {
+    width: 100%;
+    height: 20px;
+    background: #555;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0;
+  }
+
+  .storage-bar-fill {
+    height: 100%;
+    background: linear-gradient(145deg, #2196F3, #1976D2);
+    transition: width 0.3s ease;
+  }
+
+  .actions {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(145deg, #2196F3, #1976D2);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  button:hover {
+    background: linear-gradient(145deg, #1976D2, #1565C0);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+  }
+
+  button.delete {
+    background: linear-gradient(145deg, #f44336, #d32f2f);
+  }
+
+  button.delete:hover {
+    background: linear-gradient(145deg, #d32f2f, #c62828);
+    box-shadow: 0 4px 15px rgba(244, 67, 54, 0.3);
+  }
+
+  .control-panel {
+    position: absolute;
+    top: -50px;
+    right: 0;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(145deg, #2196F3, #1976D2);
+    color: white;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(33, 150, 243, 0.2);
+    display: inline-block;
+  }
+
+  .control-panel:hover {
+    background: linear-gradient(145deg, #1976D2, #1565C0);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(33, 150, 243, 0.3);
+  }
+
+  #fileInput {
+    display: none;
+  }
+
+  .message {
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    display: none;
+  }
+
+  .success {
+    background: #43A047;
+    color: white;
+  }
+
+  .error {
+    background: #d32f2f;
+    color: white;
+  }
+
+  .preview {
+    background: #444;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+
+  .preview h3 {
+    margin-bottom: 1rem;
+    color: #90CAF9;
+    text-transform: uppercase;
+    font-size: 1rem;
+    letter-spacing: 0.5px;
+  }
+
+  pre {
+    white-space: pre-wrap;
+    word-break: break-all;
+    background: #555;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #666;
+    max-height: 200px;
+    overflow-y: auto;
+    color: #fff;
+    font-family: 'Courier New', monospace;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #444;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #666;
+    border-radius: 4px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #888;
+  }
